@@ -183,11 +183,12 @@ def _process_layers(cmd):
     output, error = process.communicate()
     log.info(output)
     if error:
-        raise Exception(error)
+        log.error(error)
+        #raise Exception(error)
     return True
 
 
-def calc_layers(files, outputfile, calc_type="avg", overwrite=True):
+def calc_layers(files, outputfile, calc_type="avg", options=[], overwrite=True):
     """
     :param files: array of files or String with the path
     :type array or string: Array of files ["/path/a.tif","/path/b.tif"] or string with the path i.e. "/path/*.tif"
@@ -226,6 +227,10 @@ def calc_layers(files, outputfile, calc_type="avg", overwrite=True):
 
     # alphalist
     cmd += _create_cmd_alphalist(alphalist)
+
+    # add options
+    for option in options:
+        cmd += " " + option + " "
 
     # process layers
     return _process_layers(cmd)
